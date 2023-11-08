@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
@@ -15,29 +16,47 @@ export default function SignUp() {
   console.log(formData);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      setLoading(true);
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      if (data.success === false) {
+    setLoading(true);
+    axios
+      .post("/api/auth/signup", formData)
+      .then((res) => {
+        console.log("res", res);
         setLoading(false);
-        setError(data.message);
+        setError(null);
+        navigate("/sign-in");
+        console.log(res.data);
+      })
+      .catch((e) => {
+        console.log("err", e);
+        setLoading(false);
+        setError(e?.response?.data?.message);
         return;
-      }
-      setLoading(false);
-      setError(null);
-      navigate("/sign-in");
-      console.log(data);
-    } catch (error) {
-      setLoading(false);
-      setError(error.message);
-    }
+      });
+
+    // try {
+    //   setLoading(true);
+    //   const res = await fetch("/api/auth/signup", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(formData),
+    //   });
+    //   const data = await res.json();
+    //   if (data.success === false) {
+    //     setLoading(false);
+    //     setError(data.message);
+    //     return;
+    //   }
+    //   setLoading(false);
+    //   setError(null);
+    //   navigate("/sign-in");
+    //   console.log(data);
+    // } catch (error) {
+    //   console.log("sign up error", error);
+    //   setLoading(false);
+    //   setError(error.message);
+    // }
   };
   return (
     <div className="p-3 max-w-lg mx-auto">
