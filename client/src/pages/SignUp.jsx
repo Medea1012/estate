@@ -20,43 +20,16 @@ export default function SignUp() {
     axios
       .post("/api/auth/signup", formData)
       .then((res) => {
-        console.log("res", res);
         setLoading(false);
         setError(null);
         navigate("/sign-in");
-        console.log(res.data);
       })
-      .catch((e) => {
-        console.log("err", e);
+      .catch((error) => {
+        console.log("err", error);
         setLoading(false);
-        setError(e?.response?.data?.message);
+        setError(error?.response?.data?.message);
         return;
       });
-
-    // try {
-    //   setLoading(true);
-    //   const res = await fetch("/api/auth/signup", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(formData),
-    //   });
-    //   const data = await res.json();
-    //   if (data.success === false) {
-    //     setLoading(false);
-    //     setError(data.message);
-    //     return;
-    //   }
-    //   setLoading(false);
-    //   setError(null);
-    //   navigate("/sign-in");
-    //   console.log(data);
-    // } catch (error) {
-    //   console.log("sign up error", error);
-    //   setLoading(false);
-    //   setError(error.message);
-    // }
   };
   return (
     <div className="p-3 max-w-lg mx-auto">
