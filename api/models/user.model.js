@@ -16,6 +16,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
+    avatar: {
+      type: String,
+      default:
+        "https://pic1.zhimg.com/v2-e7c87873757aee017b902c929dc3552b_720w.jpg?source=172ae18b",
+    },
   },
   { timestamps: true }
 );
