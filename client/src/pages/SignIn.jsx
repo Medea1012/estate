@@ -28,7 +28,7 @@ export default function SignIn() {
     axios
       .post("/api/auth/signin", formData)
       .then((res) => {
-        dispatch(signInSuccess(res));
+        dispatch(signInSuccess(res.data));
         navigate("/");
       })
       .catch((error) => {

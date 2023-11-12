@@ -11,9 +11,12 @@ export default function OAuth() {
   const handleGoogleClick = async () => {
     try {
       const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({
+        prompt: "select_account",
+      });
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
-      console.log(result);
+      console.log("google auth result", result);
       axios
         .post("/api/auth/google", {
           name: result.user.displayName,
@@ -21,7 +24,7 @@ export default function OAuth() {
           photo: result.user.photoURL,
         })
         .then((res) => {
-          dispatch(signInSuccess(res));
+          dispatch(signInSuccess(res.data));
           navigate("/");
         });
     } catch (error) {
