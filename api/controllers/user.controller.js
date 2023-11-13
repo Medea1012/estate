@@ -27,7 +27,6 @@ export const updateUser = async (req, res) => {
     );
     const { password, ...rest } = updatedUser._doc;
     res.status(200).json(rest);
-    console.log(res);
   } catch (error) {
     console.log(error);
     return res

@@ -21,7 +21,7 @@ export default function SignIn() {
       [e.target.id]: e.target.value,
     });
   };
-  console.log(formData);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(signInStart());
