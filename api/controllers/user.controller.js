@@ -34,3 +34,19 @@ export const updateUser = async (req, res) => {
       .json({ success: false, message: "Something wrong on updating user..." });
   }
 };
+
+export const deleteUser = async (req, res) => {
+  if (req.user.id != req.params.id) {
+    return res.status(401).json("Yon can only delete your account!");
+  }
+  try {
+    await User.findByIdAndDelete(req.user.id);
+    res.clearCookie("access_token");
+    res.status(200).json("User has been deleted!");
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Something wrong on deleting user..." });
+  }
+};
