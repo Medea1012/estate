@@ -33,6 +33,11 @@ export const signin = async (req, res) => {
   try {
     const { email, password } = req.body;
     const validUser = await User.findOne({ email });
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ success: false, message: "All fileds required..." });
+    }
     if (!validUser) {
       return res
         .status(404)
