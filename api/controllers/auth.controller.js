@@ -99,3 +99,15 @@ export const google = async (req, res) => {
       .json({ success: false, message: "Something wrong on signing in..." });
   }
 };
+
+export const signOut = async (req, res) => {
+  try {
+    res.clearCookie("access_token");
+    res.status(200).json("User has been logged out!");
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Something wrong on signing out...",
+    });
+  }
+};
