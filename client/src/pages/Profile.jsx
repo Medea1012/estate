@@ -132,6 +132,20 @@ export default function Profile() {
       });
   };
 
+  const handleListingDelete = async (listingId) => {
+    axios
+      .delete(`/api/listing/delete/${listingId}`, formData)
+      .then((res) => {
+        setUserListings((prev) =>
+          prev.filter((listing) => listing._id !== listingId)
+        );
+      })
+      .catch((error) => {
+        console.log(error?.response?.data?.message);
+        return;
+      });
+  };
+
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
