@@ -31,3 +31,28 @@ export const deleteListing = async (req, res) => {
     });
   }
 };
+
+export const updateListing = async (req, res) => {
+  const listing = await Listing.findById(req.params.id);
+  if (!listing) {
+    return res.status(404).json("Listing not found!");
+  }
+  if (req.user.id !== listing.userRef) {
+    return res.status(401).json("You can only update your own listings!");
+  }
+
+  try {
+    const updatedListing = await Listing.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.status(200).json(updatedListing);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something wrong on updating listings...",
+    });
+  }
+};
