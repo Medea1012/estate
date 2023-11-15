@@ -1,5 +1,6 @@
 import bcryptjs from "bcryptjs";
 import User from "../models/user.model.js";
+import Listing from "../models/listing.model.js";
 
 export const test = (req, res) => {
   res.json({ message: "Api route is working!" });
@@ -48,5 +49,21 @@ export const deleteUser = async (req, res) => {
     return res
       .status(500)
       .json({ success: false, message: "Something wrong on deleting user..." });
+  }
+};
+
+export const getUserListings = async (req, res) => {
+  try {
+    if (req.user.id === req.params.id) {
+      const listings = await Listing.find({ userRef: req.params.id });
+      res.status(200).json(listings);
+    } else {
+      return res.status(401).json("You can only view your own listing!");
+    }
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Something wrong on creating List..." });
   }
 };
