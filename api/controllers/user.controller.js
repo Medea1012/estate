@@ -10,6 +10,7 @@ export const updateUser = async (req, res) => {
   if (req.user.id !== req.params.id) {
     return res.status(401).json("You can only update your own account!");
   }
+
   try {
     if (req.body.password) {
       req.body.password = bcryptjs.hashSync(req.body.password, 10);
