@@ -14,7 +14,8 @@ import {
   FaParking,
   FaShare,
 } from "react-icons/fa";
-// import Contact from '../components/Contact';
+import Contact from "../components/Contact";
+import axios from "axios";
 
 export default function Listing() {
   SwiperCore.use([Navigation]);
@@ -28,22 +29,20 @@ export default function Listing() {
 
   useEffect(() => {
     const fetchListing = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(`/api/listing/get/${params.listingId}`);
-        const data = await res.json();
-        if (data.success === false) {
+      setLoading(true);
+      axios
+        .get(`/api/listing/get/${params.listingId}`, listing)
+        .then((res) => {
+          setListing(res.data);
+          setLoading(false);
+          setError(false);
+        })
+        .catch((error) => {
           setError(true);
           setLoading(false);
+          console.log(error?.response?.data?.message);
           return;
-        }
-        setListing(data);
-        setLoading(false);
-        setError(false);
-      } catch (error) {
-        setError(true);
-        setLoading(false);
-      }
+        });
     };
     fetchListing();
   }, [params.listingId]);

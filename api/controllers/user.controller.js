@@ -65,6 +65,22 @@ export const getUserListings = async (req, res) => {
     console.log(error);
     return res
       .status(500)
-      .json({ success: false, message: "Something wrong on creating List..." });
+      .json({ success: false, message: "Something wrong on getting List..." });
+  }
+};
+
+export const getUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json("User not found!");
+    }
+    const { password: pass, ...rest } = user._doc;
+    res.status(200).json(rest);
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Something wrong on getting user..." });
   }
 };
