@@ -6,6 +6,7 @@ import authRouter from "./routes/auth.route.js";
 import listingRouter from "./routes/listing.router.js";
 import cookieParser from "cookie-parser";
 import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 mongoose
@@ -16,17 +17,16 @@ mongoose
   .catch((error) => {
     console.log(error);
   });
-const __dirname = path.resolve();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
+
+app.use(express.static(path.join(__dirname, "..", "client", "dist")));
+
 app.use(express.json());
 app.use(cookieParser());
-
-app.use(express.static(path.join(__dirname, "/client/dist")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
-});
 
 app.listen(3000, () => {
   console.log("Server running on Port 3000");
